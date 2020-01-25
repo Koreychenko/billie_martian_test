@@ -41,7 +41,7 @@ class TimeService implements ITimeService
         /* seconds */
         $mtcs = ($days * 86400) % 60;
 
-        $msd = round((($utcDiff - ($epochDiff)) / 86400 + 2440587.5 + (67.184 / 86400) - 2451545 - 4.5) / 1.027491252 + 44796 - 0.00096, 2);
+        $msd = round($days, 2);
 
         return new PlanetTime($msd, $mtch, $mtcm, $mtcs);
     }
