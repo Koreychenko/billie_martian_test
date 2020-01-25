@@ -1,0 +1,15 @@
+version: '3'
+services:
+  fpm:
+    build: ./php
+    volumes:
+    - ./html:/var/www/html:delegated    
+  apache:
+    image: webdevops/apache:alpine-3
+    ports:
+    - '80:80'
+    environment:
+      WEB_PHP_SOCKET: fpm:9000
+      WEB_DOCUMENT_ROOT: /var/www/html/public
+    volumes:
+    - ./html:/var/www/html:delegated
