@@ -29,15 +29,31 @@ class TimeService implements ITimeService
 
         $utcDiff = $this->getDiffInSeconds($date1, $earthTime);
 
-        $mtch = ((((($utcDiff - $epochDiff) / 86400 + 2440587.5 + (67.184 / 86400) - 2451545 - 4.5) / 1.027491252) + 44796 - 0.00096) * 24) % 24;
-        $mtcm = ((((($utcDiff - $epochDiff) / 86400 + 2440587.5 + (67.184 / 86400) - 2451545 - 4.5) / 1.027491252) + 44796 - 0.00096) * 1440) % 60;
-        $mtcs = ((((($utcDiff - $epochDiff) / 86400 + 2440587.5 + (67.184 / 86400) - 2451545 - 4.5) / 1.027491252) + 44796 - 0.00096) * 86400) % 60;
+        /**
+         * Formula is given from here https://www.giss.nasa.gov/tools/mars24/help/algorithm.html
+         */
+        $days = (((($utcDiff - $epochDiff) / 86400 + 2440587.5 + (64.184 / 86400) - 2451545 - 4.5) / 1.027491252) + 44796 - 0.00096);
+
+        /* hours */
+        $mtch = ($days * 24) % 24;
+        /* minutes */
+        $mtcm = ($days * 1440) % 60;
+        /* seconds */
+        $mtcs = ($days * 86400) % 60;
 
         $msd = round((($utcDiff - ($epochDiff)) / 86400 + 2440587.5 + (67.184 / 86400) - 2451545 - 4.5) / 1.027491252 + 44796 - 0.00096, 2);
 
         return new PlanetTime($msd, $mtch, $mtcm, $mtcs);
     }
 
+    /**
+     * Returns precise difference between two dates in seconds
+     *
+     * @param DateTime $date1
+     * @param DateTime $date2
+     *
+     * @return float
+     */
     protected function getDiffInSeconds(DateTime $date1, DateTime $date2): float
     {
         $diff = $date1->diff($date2);

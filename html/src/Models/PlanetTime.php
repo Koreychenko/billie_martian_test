@@ -23,11 +23,24 @@ class PlanetTime
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getDays(): float
     {
         return $this->days;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormattedTime(): string
+    {
+        return sprintf(
+            '%02d:%02d:%02d',
+            $this->getHours(),
+            $this->getMinutes(),
+            $this->getSeconds()
+        );
     }
 
     /**
@@ -52,15 +65,5 @@ class PlanetTime
     public function getSeconds(): int
     {
         return $this->seconds;
-    }
-
-    public function getFormattedTime(): string
-    {
-        return sprintf(
-            '%d:%d:%d',
-            $this->getHours(),
-            $this->getMinutes(),
-            $this->getSeconds()
-        );
     }
 }

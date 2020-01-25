@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
-use App\Exceptions\InvalidDateException;
 use App\Services\Mars\TimeService;
 use DateTime;
 use DateTimeZone;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TimeController extends AbstractController
@@ -25,6 +26,10 @@ class TimeController extends AbstractController
 
     /**
      * @Route("/mars", name="marsTime")
+     * @param TimeService $marsTimeService
+     * @param Request     $request
+     *
+     * @return JsonResponse|Response
      */
     public function marsTime(TimeService $marsTimeService, Request $request)
     {
@@ -41,11 +46,11 @@ class TimeController extends AbstractController
 
             $result = [
                 'MSD' => $planetTime->getDays(),
-                'MTC' => $planetTime->getFormattedTime()
+                'MTC' => $planetTime->getFormattedTime(),
             ];
 
         } catch (Exception $e) {
-            throw new InvalidDateException('Invalid date format');
+            return $this->json(['message' => 'Invalid date format'], 400);
         }
 
         return $this->json($result);
