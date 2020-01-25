@@ -18,7 +18,7 @@ class TimeServiceSpec extends ObjectBehavior
     {
         $date = new DateTime('2012-08-09T14:02:01', new \DateTimeZone('UTC'));
         $this->getTime($date)->shouldBeAnInstanceOf(PlanetTime::class);
-        $this->getTime($date)->getDays()->shouldReturn(49272);
+        $this->getTime($date)->getDays()->shouldReturn(49272.52);
         $this->getTime($date)->getFormattedTime()->shouldReturn('12:27:56');
     }
 }

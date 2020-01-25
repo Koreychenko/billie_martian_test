@@ -6,7 +6,7 @@ namespace App\Models;
 
 class PlanetTime
 {
-    protected int $days;
+    protected float $days;
 
     protected int $hours;
 
@@ -14,7 +14,7 @@ class PlanetTime
 
     protected int $seconds;
 
-    public function __construct(int $days, int $hours = 0, int $minutes = 0, int $seconds = 0)
+    public function __construct(float $days, int $hours = 0, int $minutes = 0, int $seconds = 0)
     {
         $this->days    = $days;
         $this->hours   = $hours;
@@ -25,7 +25,7 @@ class PlanetTime
     /**
      * @return int
      */
-    public function getDays(): int
+    public function getDays(): float
     {
         return $this->days;
     }

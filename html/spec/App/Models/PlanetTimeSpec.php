@@ -19,7 +19,7 @@ class PlanetTimeSpec extends ObjectBehavior
 
     function it_is_has_workingGetters()
     {
-        $this->getDays()->shouldReturn(100);
+        $this->getDays()->shouldReturn(100.0);
         $this->getHours()->shouldReturn(20);
         $this->getMinutes()->shouldReturn(10);
         $this->getSeconds()->shouldReturn(30);
