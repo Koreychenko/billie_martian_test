@@ -3,6 +3,7 @@
 
 namespace App\Services\Mars;
 
+use App\Models\MarsPlanetTime;
 use App\Models\PlanetTime;
 use App\Services\ITimeService;
 use DateTime;
@@ -43,7 +44,7 @@ class TimeService implements ITimeService
 
         $msd = round($days, 2);
 
-        return new PlanetTime($msd, $mtch, $mtcm, $mtcs);
+        return new MarsPlanetTime($msd, $mtch, $mtcm, $mtcs);
     }
 
     /**

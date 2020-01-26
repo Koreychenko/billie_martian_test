@@ -4,7 +4,7 @@
 namespace App\Models;
 
 
-class PlanetTime
+abstract class PlanetTime
 {
     protected float $days;
 
@@ -28,6 +28,17 @@ class PlanetTime
     public function getDays(): float
     {
         return $this->days;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormattedDays(): string
+    {
+        return sprintf(
+            '%s',
+            $this->getDays()
+        );
     }
 
     /**

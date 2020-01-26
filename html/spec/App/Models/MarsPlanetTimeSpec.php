@@ -5,7 +5,7 @@ namespace spec\App\Models;
 use App\Models\PlanetTime;
 use PhpSpec\ObjectBehavior;
 
-class PlanetTimeSpec extends ObjectBehavior
+class MarsPlanetTimeSpec extends ObjectBehavior
 {
     function let()
     {
@@ -23,6 +23,7 @@ class PlanetTimeSpec extends ObjectBehavior
         $this->getHours()->shouldReturn(20);
         $this->getMinutes()->shouldReturn(10);
         $this->getSeconds()->shouldReturn(30);
-        $this->getFormattedTime()->shouldReturn('20:10:30');
+        $this->getFormattedTime()->shouldReturn('20:10:30 MTC');
+        $this->getFormattedDays()->shouldReturn('100 MSD');
     }
 }

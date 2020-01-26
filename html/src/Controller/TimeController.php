@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Services\Mars\TimeService;
+use App\Services\ITimeService;
+use App\Services\TimeServiceFactory;
 use DateTime;
 use DateTimeZone;
 use Exception;
@@ -25,14 +26,21 @@ class TimeController extends AbstractController
     }
 
     /**
-     * @Route("/mars", name="marsTime")
-     * @param TimeService $marsTimeService
-     * @param Request     $request
+     * @Route("/{planetName}", name="marsTime")
+     * @param string             $planetName
+     * @param TimeServiceFactory $timeServiceFactory
+     * @param Request            $request
      *
      * @return JsonResponse|Response
      */
-    public function marsTime(TimeService $marsTimeService, Request $request)
+    public function planetTime(string $planetName, TimeServiceFactory $timeServiceFactory, Request $request)
     {
+        try {
+            $timeService = $timeServiceFactory->getTimeService($planetName);
+        } catch (\Exception $exception) {
+            return $this->json(['message' => sprintf("We have no time service for planet %s yet", ucfirst($planetName))], 400);
+        }
+
         try {
             $date = $request->query->get('date');
 
@@ -42,11 +50,11 @@ class TimeController extends AbstractController
 
             $date = new DateTime($date, new DateTimeZone('UTC'));
 
-            $planetTime = $marsTimeService->getTime($date);
+            $planetTime = $timeService->getTime($date);
 
             $result = [
-                'MSD' => $planetTime->getDays(),
-                'MTC' => $planetTime->getFormattedTime(),
+                'date' => $planetTime->getFormattedDays(),
+                'time' => $planetTime->getFormattedTime(),
             ];
 
         } catch (Exception $e) {
