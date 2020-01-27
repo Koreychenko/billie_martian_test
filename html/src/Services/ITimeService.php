@@ -10,4 +10,6 @@ use DateTime;
 interface ITimeService
 {
     public function getTime(DateTime $earthTime): PlanetTime;
+
+    public function getPlanet(): string;
 }

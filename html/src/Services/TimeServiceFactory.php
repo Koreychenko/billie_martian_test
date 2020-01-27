@@ -8,12 +8,19 @@ use Exception;
 
 class TimeServiceFactory
 {
+    protected $timeServices;
+
+    public function __construct(iterable $timeServices)
+    {
+        $this->timeServices = $timeServices;
+    }
+
     public function getTimeService(string $planetName)
     {
-        $planetTimeServiceName = 'App\\Services\\' . ucfirst($planetName) . '\\TimeService';
-
-        if (class_exists($planetTimeServiceName)) {
-            return new $planetTimeServiceName();
+        foreach ($this->timeServices as $timeService) {
+            if ($timeService->getPlanet() == ucfirst($planetName)) {
+                return $timeService;
+            }
         }
 
         throw new Exception('Invalid planet name');

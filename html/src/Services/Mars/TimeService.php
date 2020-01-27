@@ -8,32 +8,36 @@ use App\Models\PlanetTime;
 use App\Services\ITimeService;
 use DateTime;
 use DateTimeZone;
+use Exception;
 
 
 class TimeService implements ITimeService
 {
-    protected const EPOCH_1900 = '1900-01-01';
+    protected string $planetName = 'Mars';
+
     protected const EPOCH_1970 = '1970-01-01';
+
+    public function getPlanet(): string
+    {
+        return $this->planetName;
+    }
 
     /**
      * @param DateTime $earthTime
      *
      * @return PlanetTime
-     * @throws \Exception
+     * @throws Exception
      */
     public function getTime(DateTime $earthTime): PlanetTime
     {
-        $date1 = new DateTime($this::EPOCH_1900, new DateTimeZone('UTC'));
-        $date2 = new DateTime($this::EPOCH_1970, new DateTimeZone('UTC'));
+        $epoch1970 = new DateTime($this::EPOCH_1970, new DateTimeZone('UTC'));
 
-        $epochDiff = $this->getDiffInSeconds($date1, $date2);
-
-        $utcDiff = $this->getDiffInSeconds($date1, $earthTime);
+        $utcDiff = $this->getDiffInSeconds($epoch1970, $earthTime);
 
         /**
          * Formula is given from here https://www.giss.nasa.gov/tools/mars24/help/algorithm.html
          */
-        $days = (((($utcDiff - $epochDiff) / 86400 + 2440587.5 + (64.184 / 86400) - 2451545 - 4.5) / 1.027491252) + 44796 - 0.00096);
+        $days = ((($utcDiff / 86400 + 2440587.5 + (64.184 / 86400) - 2451545 - 4.5) / 1.027491252) + 44796 - 0.00096);
 
         /* hours */
         $mtch = ($days * 24) % 24;
